@@ -1,18 +1,22 @@
 package com.coderscampus.arraylist;
 
+import java.util.Arrays;
+
 public class CustomArrayList<T> implements CustomList<T>{
 	Object[] items = new Object[10];
-	int i = 0;
+	int currentIndex = 0;
+	int listSize = 0;
 	
 	@Override
 	public boolean add(T item) {
-		if (i == items.length) {
-			expandBackingArray();
+			if (listSize == items.length) {
+				expandBackingArray();
+			}
+			items[listSize] = item;
+			currentIndex = listSize++;
+			return true; 
+			
 		}
-		items[i] = item;
-		i++;
-		return true;
-	}
 
 	private void expandBackingArray() {
 		Object[] oldItems = items;
@@ -25,28 +29,24 @@ public class CustomArrayList<T> implements CustomList<T>{
 	@Override
 	public boolean add(int index, T item) throws IndexOutOfBoundsException {
 		
-		while (index > items.length - 1) {
+		if (listSize == items.length) {
 			expandBackingArray();
 		}
-		for (int i = items.length; i == index; i--) {
-			items[i] = items[i-1];			
+		for (int j = currentIndex; j >= index; j--) {
+			items[j + 1] = items[j];			
+			
 		}
 		items[index] = item;
+		currentIndex = listSize++;
 		return true;
 	}
 
 	@Override
 	public int getSize() {
-		for (int i = 0; i < items.length; i++) {
-			if (items[i]!= null) {
-                i++;
-            }
-		}
-		
-		
-		return i;
+		return listSize;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T get(int index) throws IndexOutOfBoundsException {
 		return (T) items[index];
@@ -54,14 +54,22 @@ public class CustomArrayList<T> implements CustomList<T>{
 
 	@Override
 	public T remove(int index) throws IndexOutOfBoundsException {
-			for (int i = index; i < items.length - 1; i++) {
-				if (i == items.length) {
-					items[i] = null;
+			for (int j = index; j < items.length; j++) {
+				if (j == items.length - 1) {
+					items[j] = null;
+					currentIndex--;
+					listSize--;
+				} else {
+					items[j] = items[j+1];
 				}
-					items[i] = items[i+1];
-				}
+			}
 		
 		return null;
+	}
+	
+	@Override
+	public String toString() {
+		return "CustomArrayList [items=" + Arrays.toString(items) + ", currentIndex=" + currentIndex + ", listSize=" + listSize + "]";
 	}
 
 }

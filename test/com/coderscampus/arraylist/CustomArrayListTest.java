@@ -27,7 +27,7 @@ class CustomArrayListTest {
       
       
         assertEquals(2, sut.get(0));
-        assertEquals(1, sut.get(1));
+        assertEquals(0, sut.get(1));
 	}
 	
 	@Test
@@ -45,10 +45,37 @@ class CustomArrayListTest {
 		for (int i = 0; i <= 21; i++) {
             sut.add(i);
         }
-		sut.remove(0);
-		assertEquals(1, sut.get(0));
-		assertEquals(null,sut.get(sut.getSize()));
+		sut.remove(7);
+		assertEquals(8, sut.get(7));
+		assertEquals(9,sut.get(8));
 ;	}
+	
+	@Test
+	void should_execute_all_functions_together() {
+		CustomList<Integer> sut = new CustomArrayList<Integer>();
+
+		for (int x = 0; x < 15; x++) {
+			sut.add(x);
+			
+		}
+		sut.remove(9);
+		sut.remove(7);
+		assertEquals(10, sut.get(8));
+		
+		sut.add(1000);
+		assertEquals(1000, sut.get(13));
+		
+		sut.add(7, 1001);
+		sut.add(7, 1002);
+		sut.add(7, 89);
+		assertEquals(89, sut.get(7));
+		assertEquals(1002, sut.get(8));
+		
+		sut.remove(7);
+		sut.add(2000);
+		sut.add(3000);
+		assertEquals(3000, sut.get(17));
+	}
 }
 
 
